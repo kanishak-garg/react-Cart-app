@@ -2,35 +2,6 @@ import React from 'react';
 
 class CartItem extends React.Component{
 
-   
-
-    // we are using arrow function because it will bind the value of this otherwise this will be lost
-    increaseQuantity = () => {
-        // first method of setstate
-        // this.setState({
-        //     qty: this.state.qty + 1
-        // });
-        
-        // 2nd way of setstate   ( use when we require previous state to change new state  here we req qty)
-        this.setState((prevState) => {
-            return {
-                qty: prevState.qty + 1 
-            }
-        })
-    }
-
-    decreaseQuantity = () => {
-        const { qty } = this.state;
-        if(qty == 0){
-            return;
-        }
-        this.setState((prevState) => {
-                return {
-                    qty: prevState.qty - 1
-                }
-        })
-    }
-
     render(){
         const {price, title, qty} = this.props.product;
 
@@ -51,13 +22,13 @@ class CartItem extends React.Component{
                             alt="increase" 
                             className="action-icons" 
                             src="https://cdn-icons-png.flaticon.com/512/992/992651.png"
-                            onClick={this.increaseQuantity}
+                            onClick={() => this.props.onIncreaseQuantity(this.props.product)}
                         />
                         <img 
                             alt="decrease" 
                             className="action-icons"
                             src="https://cdn-icons-png.flaticon.com/512/992/992683.png"
-                            onClick={this.decreaseQuantity} 
+                            onClick={() => this.props.onDecreaseQuantity(this.props.product)} 
                         />
                         <img 
                             alt="delete" 
