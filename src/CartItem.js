@@ -12,12 +12,34 @@ class CartItem extends React.Component{
         }
     }
 
-    increaseQuantity= () => {
-        console.log(this.state);
+    // we are using arrow function because it will bind the value of this otherwise this will be lost
+    increaseQuantity = () => {
+        // first method of setstate
+        // this.setState({
+        //     qty: this.state.qty + 1
+        // });
+        
+        // 2nd way of setstate   ( use when we require previous state to change new state  here we req qty)
+        this.setState((prevState) => {
+            return {
+                qty: prevState.qty + 1 
+            }
+        })
+    }
+
+    decreaseQuantity = () => {
+        this.setState((prevState) => {
+            if(prevState.qty>1){
+                return {
+                    qty: prevState.qty - 1
+                }
+            }
+        })
     }
 
     render(){
         const {price, title, qty} = this.state;
+
         return(
             <div className="cart-item">
                 <div className="left-block">
