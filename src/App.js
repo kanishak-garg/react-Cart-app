@@ -49,10 +49,21 @@ class App extends React.Component {
   handleIncreaseQuantity = (product) => {
     const {products} = this.state;
     const index = products.indexOf(product);
+    // update qty localy
+    // product.qty += 1;
+    // this.setState({products});
 
-    products[index].qty += 1;
-    this.setState({products});
-
+    //update qty in firebase
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef.update({
+      qty: products[index].qty + 1
+    })
+    .then(() => {
+      console.log('updated');
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 
   handleDecreaseQuantity = (product) => {
@@ -61,8 +72,17 @@ class App extends React.Component {
     if(products[index].qty === 0){
         return;
     }
-    products[index].qty -= 1;
-    this.setState({products});
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef
+      .update({
+        qty: products[index].qty - 1
+      })
+      .then(() => {
+        console.log('decreased');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   handleDeleteProduct = (id) => {
@@ -115,7 +135,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Navbar count = {this.getCartCount()} />
-        <button onClick={this.addProduct}>Add a product</button>
+        {/* <button onClick={this.addProduct}>Add a product</button> */}
         <Cart 
           products = {products}
           onIncreaseQuantity = {this.handleIncreaseQuantity} 
