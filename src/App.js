@@ -62,7 +62,7 @@ class App extends React.Component {
       console.log('updated');
     })
     .catch((error) => {
-      console.log(error);
+      console.log('error: ',error);
     })
   }
 
@@ -81,17 +81,25 @@ class App extends React.Component {
         console.log('decreased');
       })
       .catch((error) => {
-        console.log(error);
+        console.log('error: ',error);
       })
   }
 
   handleDeleteProduct = (id) => {
     const {products} = this.state;
-    const items = products.filter((item) => item.id !==id);
+    //const items = products.filter((item) => item.id !==id);  delete locally
     
-    this.setState({
-        products: items
-    })
+    //delete in firebase
+    const docRef = this.db.collection('products').doc(id);
+    docRef
+      .delete()
+      .then(() => {
+        console.log('deleted successfully');
+      })
+      .catch((error) => {
+        console.log('error: ',error);
+      })
+    
   }
 
   getCartCount = () => {
